@@ -1,0 +1,3 @@
+re.compile(r"(.*?)\$_GET\['(.*?)'\]")
+r"(.*?)QueryString\[\"(.*?)\"\]"
+r"(.*?)QueryString\(\"(.*?)\"\)"
