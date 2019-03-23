@@ -3,12 +3,25 @@ import sys
 import re
 from termcolor import colored
 import urllib.request
+import requests
 
 
 def getParams(regexstr, content):
 	regexcomp = re.compile(r"" + regexstr +"")
 	params = re.findall(regexcomp, content)
 	return params
+
+
+def getByFileTypes(filetypes, wwwroot):
+	print(wwwroot)
+	filelist = []
+	for ft in filetypes:
+		globobj = glob.iglob((wwwroot +"/**/"+ ft), recursive=True)
+
+		for line in globobj:
+			filelist.append(line)
+	return filelist
+
 
 regexlist = []
 urlList = []
@@ -18,7 +31,9 @@ with open("./regex", 'r') as f:
 		regexlist.append(line.rstrip())
 
 if len(sys.argv) >= 3:
-	wwwrootpath = sys.argv[1] +  '/**/*.*'
+	wwwrootpath2 = sys.argv[1]
+
+	filetypes = ['*.jsp', '*.aspx', '*.php', '*.cs']
 	siteurl = sys.argv[2]
 	payload = sys.argv[3]
 
@@ -26,14 +41,14 @@ else:
 	print('Missing argument variables. wwwroot siteurl payload')
 	exit()
 
-filepaths = glob.iglob((wwwrootpath), recursive=True)
+filepaths = getByFileTypes(filetypes, wwwrootpath2)
 
 for filename in filepaths:
 	content = ""
 	with open(filename, 'r') as f:
 		for line in f.read():
 			content += line
-		
+
 		paramstr = ""
 		paramstrprint = ""
 
@@ -61,3 +76,14 @@ if yesorno == 'y':
 		except urllib.error.HTTPError as err:
 #   			if err.code == 404:
    				print(colored(err.code, 'red'), url)
+
+yesorno = input('Send to proxy? y/n')
+
+if yesorno == 'y':
+	for url in urlList:
+		proxies = {
+			  "http": "http://127.0.0.1:8080",
+			  "https": "http://127.0.0.1:8080",
+			}
+
+		requests.get(url, proxies=proxies)
