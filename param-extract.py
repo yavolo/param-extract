@@ -73,9 +73,14 @@ if yesorno == 'y':
 			   	resp = response.read()
 			   	if payload in str(resp):
 			   		print(colored('Reflected input! ', 'green'), url)
+		   		else:
+		   			print(colored('2XX ', 'yellow') + url)
+
 		except urllib.error.HTTPError as err:
 #   			if err.code == 404:
-   				print(colored(err.code, 'red'), url)
+			print(colored(err.code, 'red'), url)
+			continue
+
 
 yesorno = input('Send to proxy? y/n')
 
