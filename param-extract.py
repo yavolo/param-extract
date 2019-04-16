@@ -45,7 +45,7 @@ filepaths = getByFileTypes(filetypes, wwwrootpath2)
 
 for filename in filepaths:
 	content = ""
-	with open(filename, 'r') as f:
+	with open(filename, 'r', encoding="utf8", errors='ignore') as f:
 		for line in f.read():
 			content += line
 
