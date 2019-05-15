@@ -9,3 +9,4 @@ Crafted URIs can be checked for reflection directly or sent to your local burp p
 ## Example:
 `python3 param-extract.py "/home/oliver/misc/website" "http://example.com" "<script>alert(1)</script>"`
 
+![paramext](https://i.imgur.com/XZ6NUDU.png)
